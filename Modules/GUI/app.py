@@ -652,7 +652,7 @@ class AssistantGuiApp:
 
         self.dt_backend_var = tk.StringVar(value="udp")
         self.dt_policy_var = tk.StringVar(value="llm")
-        self.dt_runner_path_var = tk.StringVar(value=r".\run_dt_runner.py")
+        self.dt_runner_path_var = tk.StringVar(value=r"./run_dt_runner.py")
         self.dt_model_path_var = tk.StringVar(
             value=r".\Modules\Digital_Twins\DT_enviroment_state_machine_llm_udp.slx"
         )
@@ -1898,7 +1898,10 @@ class AssistantGuiApp:
             return
 
         try:
-            os.startfile(str(report_path))
+            if os.name == "nt":
+                os.startfile(str(report_path))
+            else:
+                subprocess.Popen(["xdg-open", str(report_path)])
         except Exception as exc:
             messagebox.showerror("Open report failed", str(exc))
 
